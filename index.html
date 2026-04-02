@@ -1,198 +1,1055 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-	<title>PUFFY - Наше местечко | Личное пространство для дневника, желаний и планов</title>
-	<link rel="stylesheet" href="style.css">
-	<link href="https://fonts.googleapis.com/css2?family=Rubik+Mono+One&display=swap" rel="stylesheet">
-	
-	<!-- PWA Meta Tags -->
-	<meta name="theme-color" content="#b8a3ff">
-	<meta name="description" content="PUFFY - уютное личное пространство для ведения дневника, создания вишлистов, сохранения рецептов и планирования дел. Ваше цифровое местечко для важных мыслей и идей.">
-	<meta name="apple-mobile-web-app-capable" content="yes">
-	<meta name="apple-mobile-web-app-status-bar-style" content="default">
-	<meta name="apple-mobile-web-app-title" content="PUFFY">
-	<meta name="application-name" content="PUFFY">
-	<meta name="keywords" content="дневник, вишлист, рецепты, планы, личное пространство, PUFFY, заметки, желания, задачи">
-	<meta name="author" content="PUFFY App">
-	<meta name="robots" content="index, follow">
-	<meta name="msapplication-TileColor" content="#b8a3ff">
-	<meta name="msapplication-config" content="browserconfig.xml">
-	
-	<!-- PWA Manifest -->
-	<link rel="manifest" href="manifest.json">
-	
-	<!-- Apple Touch Icon -->
-	<link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDE5MiAxOTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiByeD0iMjQiIGZpbGw9InVybCgjZ3JhZDApIi8+CjxkZWZzPgo8bGluZWFyR3JhZGllbnQgaWQ9ImdyYWQwIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4KPHN0b3Agb2Zmc2V0PSIwJSIgc3R5bGU9InN0b3AtY29sb3I6I2ZmOWVjNTtzdG9wLW9wYWNpdHk6MSIgLz4KPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdHlsZT0ic3RvcC1jb2xvcjojYjhhM2ZmO3N0b3Atb3BhY2l0eToxIiAvPgo8L2xpbmVhckdyYWRpZW50Pgo8L2RlZnM+Cjx0ZXh0IHg9Ijk2IiB5PSIxMDAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSI0OCIgZm9udC13ZWlnaHQ9ImJvbGQiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIj5QVUZGWTwvdGV4dD4KPC9zdmc+">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Ростелеком Дом | Умный дом</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
+
 <body>
-	<!-- Фоновые элементы -->
-	<div class="background" role="presentation" aria-hidden="true">
-		<div class="blob blob1" role="presentation" aria-hidden="true"></div>
-		<div class="blob blob2" role="presentation" aria-hidden="true"></div>
-		<div class="blob blob3" role="presentation" aria-hidden="true"></div>
-	</div>
-	<main class="container">
-		<nav class="top-menu" role="navigation" aria-label="Главное меню">
-			<a href="pages/diary.html" aria-label="Дневник - личные записи">Дневник</a>
-			<a href="pages/wishlist.html" aria-label="Вишлист - список желаний">Вишлист</a>
-			<a href="pages/recipes.html" aria-label="Рецепты - кулинарная книга">Рецепты</a>
-			<a href="pages/todolist.html" aria-label="Список дел - задачи и планы">Список дел</a>
-			<a href="pages/mediateka.html" aria-label="Медиатека - коллекция медиафайлов">Медиатека</a>
-			<a href="profile.html" id="profile-link" style="display: none;" aria-label="Личный профиль">👤 Профиль</a>
-			<a href="#" onclick="logout()" class="logout-btn" aria-label="Выйти из аккаунта">Выход</a>
-		</nav>
-		<header class="hero">
-			<h1 class="logo" aria-label="PUFFY - Наше местечко"><span class="logo-letter">P</span><span class="logo-letter">U</span><span class="logo-letter">F</span><span class="logo-letter">F</span><span class="logo-letter">Y</span></h1>
-			<p class="tagline">Наше местечко</p>
-			<p class="date" id="current-date" aria-label="Текущая дата">Загрузка даты...</p>
-		</header>
-		<section class="daily" aria-label="На сегодня">
-			<div class="place-row">
-				<div class="add-entry-wrap">
-					<button type="button" class="add-entry-btn-large" id="add-entry-btn" aria-expanded="false" aria-haspopup="true" aria-label="Добавить новую запись">
-						<span class="add-entry-btn-text-large">+ Добавить запись</span>
-					</button>
-					<div class="add-entry-dropdown" id="add-entry-dropdown" role="menu" aria-label="Меню добавления записи" hidden>
-						<a href="pages/diary.html?add=1" class="dropdown-item" role="menuitem" aria-label="Добавить запись в дневник">📔 Дневник</a>
-						<a href="pages/wishlist.html?add=1" class="dropdown-item" role="menuitem" aria-label="Добавить желание в вишлист">⭐ Вишлист</a>
-						<a href="pages/recipes.html?add=1" class="dropdown-item" role="menuitem" aria-label="Добавить рецепт">🍳 Рецепты</a>
-						<a href="pages/todolist.html?add=1" class="dropdown-item" role="menuitem" aria-label="Добавить задачу">✅ Список дел</a>
-						<a href="pages/mediateka.html?add=1" class="dropdown-item" role="menuitem" aria-label="Добавить медиафайл">🎬 Медиатека</a>
-					</div>
-				</div>
-			</div>
-			<div class="daily-row">
-				<div class="weather-card card" aria-label="Погода">
-					<h2 class="card-title">Погода</h2>
-					<div id="weather-content" class="weather-content" role="status" aria-live="polite">
-						<p class="weather-loading">Определяем местоположение…</p>
-					</div>
-				</div>
-				<div class="song-card card" role="region" aria-label="Музыка">
-					<h2 class="card-title">Песня дня</h2>
-					<iframe title="Плеер Apple Music - Песня дня" allow="autoplay *; encrypted-media *;"
-						frameborder="0" height="175"
-						style="width:100%;max-width:500px;overflow:hidden;border-radius:10px;"
-						sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation-by-user-activation"
-						src="https://embed.music.apple.com/album/birds-of-a-feather/1739659134?i=1739659142"
-						loading="lazy">
-					</iframe>
-				</div>
-			</div>
-			<div class="place-row">
-				<div class="place-card card" role="region" aria-label="Рекомендуемые места">
-					<h2 class="card-title">Рекомендуемое место в Якутске</h2>
-					<div id="place-content" class="place-content" role="status" aria-live="polite">
-						<p class="place-loading">Загружаем интересное место...</p>
-					</div>
-				</div>
-			</div>
-		</section>
-	</main>
-	<nav class="bottom-nav" role="navigation" aria-label="Навигация по разделам">
-		<a href="pages/diary.html" title="Дневник - личные записи" class="nav-item">
-			<span class="nav-icon" aria-hidden="true">📔</span>
-			<span class="nav-label">Дневник</span>
-		</a>
-		<a href="pages/wishlist.html" title="Вишлист - список желаний" class="nav-item">
-			<span class="nav-icon" aria-hidden="true">⭐</span>
-			<span class="nav-label">Вишлист</span>
-		</a>
-		<a href="pages/recipes.html" title="Рецепты - кулинарная книга" class="nav-item">
-			<span class="nav-icon" aria-hidden="true">🍳</span>
-			<span class="nav-label">Рецепты</span>
-		</a>
-		<a href="pages/todolist.html" title="Список дел - задачи и планы" class="nav-item">
-			<span class="nav-icon" aria-hidden="true">✅</span>
-			<span class="nav-label">Дела</span>
-		</a>
-		<a href="pages/mediateka.html" title="Медиатека - коллекция медиафайлов" class="nav-item">
-			<span class="nav-icon" aria-hidden="true">🎬</span>
-			<span class="nav-label">Медиатека</span>
-		</a>
-	</nav>
-	<script src="auth-system.js"></script>
-	<script>
-		// Инициализация системы авторизации
-		const authSystem = new AuthSystem();
-		
-		// Проверяем авторизацию
-		if (!authSystem.isAuthenticated()) {
-			window.location.href = "login-new.html";
-		}
-		
-		// Показываем ссылку на профиль если авторизован
-		if (authSystem.isAuthenticated()) {
-			document.getElementById('profile-link').style.display = 'inline-block';
-		}
-	</script>
-	<script src="yakutsk-places-real.js"></script>
-	<script src="weather.js"></script>
-	<script src="glass.js"></script>
-	<script>
-		// Текущая дата
-		const options = { day: 'numeric', month: 'long' };
-		document.getElementById('current-date').textContent = new Date().toLocaleDateString('ru-RU', options);
-		
-		// Активация текущего раздела в мобильном меню
-		function setActiveNavItem() {
-			const currentPath = window.location.pathname;
-			const navItems = document.querySelectorAll('.nav-item');
-			
-			navItems.forEach(item => {
-				item.classList.remove('active');
-				const href = item.getAttribute('href');
-				
-				// Проверяем совпадение пути
-				if (currentPath.includes(href) || 
-					(currentPath === '/' && href === 'index.html') ||
-					(currentPath.endsWith('index.html') && href === 'index.html')) {
-					item.classList.add('active');
-				}
-			});
-		}
-		
-		// Выпадающее меню «Добавить запись»
-		(function () {
-			var btn = document.getElementById('add-entry-btn');
-			var dropdown = document.getElementById('add-entry-dropdown');
-			if (!btn || !dropdown) return;
-			function open() {
-				dropdown.hidden = false;
-				btn.setAttribute('aria-expanded', 'true');
-				document.addEventListener('click', closeOnOutside);
-			}
-			function close() {
-				dropdown.hidden = true;
-				btn.setAttribute('aria-expanded', 'false');
-				document.removeEventListener('click', closeOnOutside);
-			}
-			function closeOnOutside(e) {
-				if (!dropdown.contains(e.target) && e.target !== btn) close();
-			}
-			btn.addEventListener('click', function (e) {
-				e.stopPropagation();
-				if (dropdown.hidden) open(); else close();
-			});
-		})();
-		
-		// Регистрация Service Worker для PWA
-		if ('serviceWorker' in navigator) {
-			window.addEventListener('load', function() {
-				navigator.serviceWorker.register('/sw.js')
-					.then(function(registration) {
-						console.log('Service Worker зарегистрирован успешно:', registration.scope);
-					})
-					.catch(function(error) {
-						console.log('Ошибка регистрации Service Worker:', error);
-					});
-			});
-		}
-		
-		// Инициализация активного пункта меню
-		setActiveNavItem();
-	</script>
+
+<div id="app">
+    <!-- Главный лендинг с тарифами -->
+    <div id="landingPage">
+        <div class="container">
+            <div class="navbar">
+                <div class="logo-area" onclick="goToDevicesPanel()">
+                    <img class="logo-img" src="https://static.tildacdn.com/tild6433-3562-4865-a665-613632306561/medium_565ce8678920c.png" alt="Ростелеком">
+                    <div class="logo-text">Ростелеком <span>Дом</span><small>умный дом для семьи</small></div>
+                </div>
+                <div class="auth-buttons" id="landingAuthButtons">
+                    <button class="btn-outline" onclick="openAuthModal('login')">Вход</button>
+                    <button class="btn-primary" onclick="openAuthModal('register')">Регистрация</button>
+                </div>
+                <div id="landingUserInfo" class="user-info hidden">
+                    <span class="user-name" id="landingUserName"></span>
+                    <span id="landingTariffBadge" class="tariff-badge">Базовый</span>
+                    <button class="logout-btn" onclick="logout()">Выйти</button>
+                </div>
+            </div>
+            <div class="hero">
+                <div class="hero-text">
+                    <div class="badge">🔐 Официальный сервис Ростелеком</div>
+                    <h1>Умный <span class="orange">дом</span><br><span class="purple">всегда</span> <span>готов</span></h1>
+                    <p>Одна кнопка — полная проверка дома. Утюг, дверь, свет — всё под контролем.</p>
+                    <button class="btn-primary" onclick="openAuthModal('register')">Начать управлять домом</button>
+                </div>
+                <div class="hero-graphic">
+                    <div class="preview-icons">
+                        <div class="preview-icon"><span>🔌</span><div>Утюг</div></div>
+                        <div class="preview-icon"><span>🚪</span><div>Дверь</div></div>
+                        <div class="preview-icon"><span>📡</span><div>Wi-Fi</div></div>
+                        <div class="preview-icon"><span>💡</span><div>Свет</div></div>
+                    </div>
+                    <p style="color: var(--text-gray); margin-top: 16px;">✨ Нажми «Что я забыл?» и будь спокоен</p>
+                </div>
+            </div>
+
+            <!-- Тарифы -->
+            <div class="pricing" id="tariffsContainer">
+                <div class="tariff-card" data-tariff="free" onclick="selectTariffFromLanding('free')">
+                    <h2>Базовый</h2>
+                    <div class="tariff-price">0 ₽<span>/мес</span></div>
+                    <ul class="tariff-features">
+                        <li>До 5 устройств</li>
+                        <li>До 3 простых сценариев</li>
+                        <li class="disabled">Адаптивные сценарии</li>
+                        <li class="disabled">Автоуборка</li>
+                        <li class="disabled">ИИ-безопасность</li>
+                        <li class="disabled">Энергосбережение</li>
+                    </ul>
+                    <button class="btn-outline btn-sm">Выбрать</button>
+                </div>
+
+                <div class="tariff-card popular" data-tariff="smart" onclick="selectTariffFromLanding('smart')">
+                    <div class="popular-tag">Популярный</div>
+                    <h2>Умный</h2>
+                    <div class="tariff-price">199 ₽<span>/мес</span></div>
+                    <ul class="tariff-features">
+                        <li>До 20 устройств</li>
+                        <li>Безлимит простых сценариев</li>
+                        <li>До 5 адаптивных сценариев</li>
+                        <li>Автоуборка (нет дома 30 мин)</li>
+                        <li>ИИ-фильтрация уведомлений</li>
+                        <li class="disabled">Энергосбережение</li>
+                    </ul>
+                    <button class="btn-primary btn-sm">Выбрать за 199 ₽</button>
+                </div>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🔍</div>
+                    <h3>Проверка за секунду</h3>
+                    <p>Нажми кнопку — узнай, что забыл выключить перед выходом</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Исправь одной кнопкой</h3>
+                    <p>Выключи забытые приборы прямо из отчета</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎬</div>
+                    <h3>Свои сценарии</h3>
+                    <p>Создавай сценарии: утром включай кофеварку и свет</p>
+                </div>
+            </div>
+        </div>
+        <footer class="container">
+            <p>© 2026 ПАО «Ростелеком». Сервис «Ростелеком Дом» — проверь, ничего не забыл?</p>
+        </footer>
+    </div>
+
+    <!-- Панель управления -->
+    <div id="dashboardPage" class="hidden">
+        <div class="container">
+            <div class="navbar">
+                <div class="logo-area" onclick="goToLanding()">
+                    <img class="logo-img" src="https://static.tildacdn.com/tild6433-3562-4865-a665-613632306561/medium_565ce8678920c.png" alt="Ростелеком">
+                    <div class="logo-text">Ростелеком <span>Дом</span><small>умный дом для семьи</small></div>
+                </div>
+                <div class="nav-links">
+                    <a onclick="showSection('devices')">Устройства</a>
+                    <a onclick="showSection('scenario')">Сценарии</a>
+                    <a onclick="showSection('profile')">Профиль</a>
+                    <div class="user-info">
+                        <span class="user-name" id="userNameDisplay"></span>
+                        <span id="tariffBadge" class="tariff-badge">Базовый</span>
+                        <button class="logout-btn" onclick="logout()">Выйти</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="devicesSection">
+                <div class="dashboard">
+                    <div class="welcome-header">
+                        <div>
+                            <h1 id="greetingText">Добро пожаловать!</h1>
+                            <p style="color: var(--text-gray);">Управляйте умным домом в одном месте</p>
+                        </div>
+                        <div>
+                            <span style="font-size:0.85rem;">Устройства: <span id="deviceCount">0</span>/<span id="deviceLimit">5</span></span>
+                        </div>
+                    </div>
+
+                    <button class="check-btn" onclick="checkBeforeExit()">
+                         Что я забыл выключить? 
+                    </button>
+
+                    <div id="checkResult" class="check-result hidden"></div>
+
+                    <div class="device-grid" id="devicesGrid"></div>
+
+                    <div class="add-device-main-btn" onclick="openAddDevicePanel()">
+                        <div style="font-size: 2rem;">+</div>
+                        <div style="font-weight: 500;">Добавить устройство</div>
+                        <div style="font-size: 0.8rem; color: var(--text-gray);">Лампа, дверь, розетка, колонка...</div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="scenarioSection" class="hidden">
+                <div class="dashboard">
+                    <div class="welcome-header">
+                        <h2>Мои сценарии</h2>
+                        <button class="btn-primary-purple btn-sm" onclick="openAddScenarioPanel()">+ Создать сценарий</button>
+                    </div>
+                    <div id="smartScenariosBlock" style="margin-bottom: 24px;"></div>
+                    <div id="customScenariosList" class="device-grid"></div>
+                    
+                    <div class="add-scenario-main-btn" onclick="openAddScenarioPanel()">
+                        <div style="font-size: 2rem;">✨</div>
+                        <div style="font-weight: 500;">Создать свой сценарий</div>
+                        <div style="font-size: 0.8rem; color: var(--text-gray);">Объедините устройства и задайте время</div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="profileSection" class="hidden">
+                <div class="dashboard">
+                    <h2>Мой профиль</h2>
+                    <div style="background: var(--gray-bg); border-radius: 28px; padding: 32px; margin-top: 24px;">
+                        <p><strong>👤 Имя:</strong> <span id="profileName"></span></p>
+                        <p><strong>📧 Email:</strong> <span id="profileEmail"></span></p>
+                        <p><strong>📊 Тариф:</strong> <span id="profileTariff"></span></p>
+                        <button class="btn-primary-purple" style="margin-top: 16px;" onclick="openTariffChangeModal()">Сменить тариф</button>
+                        <button class="btn-outline" style="margin-top: 16px; margin-left: 12px;" onclick="deleteAllDevices()">Удалить все устройства</button>
+                        <button class="btn-outline-purple" style="margin-top: 16px; margin-left: 12px;" onclick="deleteAllScenarios()">Удалить все сценарии</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="container">
+            <p>© 2026 ПАО «Ростелеком». Сервис «Ростелеком Дом» — проверь, ничего не забыл?</p>
+        </footer>
+    </div>
+</div>
+
+<!-- Выезжающая панель добавления устройств -->
+<div id="overlay" class="overlay" onclick="closeAllPanels()"></div>
+<div id="addDevicePanel" class="slide-panel">
+    <div class="slide-panel-header">
+        <span>➕ Добавить устройство</span>
+        <button class="slide-panel-close" onclick="closeAddDevicePanel()">✕</button>
+    </div>
+    <div class="devices-list-panel" id="devicesListPanel"></div>
+</div>
+
+<!-- Панель создания сценария -->
+<div id="addScenarioPanel" class="slide-panel">
+    <div class="slide-panel-header">
+        <span>✨ Создать сценарий</span>
+        <button class="slide-panel-close" onclick="closeAddScenarioPanel()">✕</button>
+    </div>
+    <div class="scenario-form" style="display: block; padding: 20px 24px;">
+        <input type="text" id="scenarioName" class="scenario-form-input" placeholder="Название сценария (например: Утро)">
+        <input type="time" id="scenarioTime" class="time-input" placeholder="Время (например: 09:00)">
+        <h4 style="margin: 16px 0 8px;">Выберите устройства:</h4>
+        <div id="scenarioDevicesList" class="devices-list-panel" style="padding: 0; margin-bottom: 20px;"></div>
+        <button class="btn-primary-purple" style="width: 100%;" onclick="createScenario()">Сохранить сценарий</button>
+    </div>
+</div>
+
+<script>
+    // Конфигурация тарифов
+    const tariffLimits = {
+        free: { maxDevices: 5, maxSimpleScenarios: 3, hasAdaptive: false, hasAutoClean: false, hasAI: false, name: "Базовый" },
+        smart: { maxDevices: 20, maxSimpleScenarios: 999, hasAdaptive: true, hasAutoClean: true, hasAI: true, name: "Умный" }
+    };
+
+    // Доступные устройства для добавления
+    const availableDevices = [
+        { name: "Лампа", icon: "💡", critical: false },
+        { name: "Дверь", icon: "🚪", critical: true },
+        { name: "Роутер", icon: "📡", critical: false },
+        { name: "Колонка", icon: "🔊", critical: false },
+        { name: "RGB лента", icon: "🌈", critical: false },
+        { name: "Телевизор", icon: "📺", critical: false },
+        { name: "Розетка", icon: "🔌", critical: false },
+        { name: "Робот-пылесос", icon: "🤖", critical: false },
+        { name: "Кондиционер", icon: "❄️", critical: false },
+        { name: "Шторы", icon: "🪟", critical: false },
+        { name: "Утюг", icon: "🔌", critical: true },
+        { name: "Чайник", icon: "🫖", critical: false }
+    ];
+
+    // Глобальные переменные
+    let currentUser = null;
+    let users = [];
+    let scenarios = { quiet: false, check: false };
+    let selectedDevicesForScenario = [];
+
+    // ========== Функции сохранения и загрузки ==========
+    function saveAllData() {
+        localStorage.setItem('users', JSON.stringify(users));
+        localStorage.setItem('scenarios', JSON.stringify(scenarios));
+        if (currentUser) {
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+        }
+        updateLandingUI();
+    }
+
+    function loadAllData() {
+        const savedUsers = localStorage.getItem('users');
+        if (savedUsers) {
+            users = JSON.parse(savedUsers);
+        } else {
+            users = [{
+                id: 1,
+                name: "Михаил",
+                email: "misha@example.com",
+                password: "123",
+                tariff: "free",
+                devices: [
+                    { id: "iron1", name: "Утюг", icon: "🔌", status: true, critical: true },
+                    { id: "door1", name: "Входная дверь", icon: "🚪", status: false, critical: true },
+                    { id: "wifi1", name: "Wi-Fi роутер", icon: "📡", status: true, critical: false },
+                    { id: "lamp1", name: "Лампа", icon: "💡", status: true, critical: false }
+                ],
+                customScenarios: []
+            }];
+            saveAllData();
+        }
+        
+        const savedScenarios = localStorage.getItem('scenarios');
+        if (savedScenarios) {
+            scenarios = JSON.parse(savedScenarios);
+        }
+        
+        const savedCurrentUser = localStorage.getItem('currentUser');
+        if (savedCurrentUser) {
+            currentUser = JSON.parse(savedCurrentUser);
+            if (!currentUser.devices) currentUser.devices = [];
+            if (!currentUser.customScenarios) currentUser.customScenarios = [];
+            showDashboard();
+        }
+        updateLandingUI();
+    }
+
+    function updateLandingUI() {
+        const authButtons = document.getElementById('landingAuthButtons');
+        const userInfo = document.getElementById('landingUserInfo');
+        
+        if (currentUser) {
+            authButtons.classList.add('hidden');
+            userInfo.classList.remove('hidden');
+            document.getElementById('landingUserName').innerText = currentUser.name;
+            document.getElementById('landingTariffBadge').innerText = tariffLimits[currentUser.tariff || 'free'].name;
+        } else {
+            authButtons.classList.remove('hidden');
+            userInfo.classList.add('hidden');
+        }
+    }
+
+    // ========== Функции управления тарифами ==========
+    function selectTariffFromLanding(tariff) {
+        if (!currentUser) {
+            openAuthModal('login');
+            return;
+        }
+        
+        showModal({
+            title: "Смена тарифа",
+            message: `Вы уверены, что хотите перейти на тариф "${tariffLimits[tariff].name}"?`,
+            showCancel: true,
+            onConfirm: () => {
+                currentUser.tariff = tariff;
+                saveAllData();
+                updateDashboardUI();
+                updateLandingUI();
+                showModal({
+                    title: "Тариф изменен",
+                    message: `Вы перешли на тариф "${tariffLimits[tariff].name}"`,
+                    confirmText: "OK",
+                    showCancel: false
+                });
+                updateTariffSelection();
+            }
+        });
+    }
+    
+    function changeTariffFromProfile(tariff) {
+        showModal({
+            title: "Смена тарифа",
+            message: `Вы уверены, что хотите перейти на тариф "${tariffLimits[tariff].name}"?`,
+            showCancel: true,
+            onConfirm: () => {
+                currentUser.tariff = tariff;
+                saveAllData();
+                updateDashboardUI();
+                updateLandingUI();
+                showModal({
+                    title: "Тариф изменен",
+                    message: `Вы перешли на тариф "${tariffLimits[tariff].name}"`,
+                    confirmText: "OK",
+                    showCancel: false
+                });
+                showSection('profile');
+            }
+        });
+    }
+    
+    function openTariffChangeModal() {
+        let modal = document.createElement('div');
+        modal.id = 'tariffModal';
+        modal.className = 'custom-modal';
+        modal.innerHTML = `
+            <div class="modal-window">
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <h3>Выберите тариф</h3>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+                    <button class="btn-outline" onclick="changeTariffFromProfile('free')">Базовый (0 ₽/мес)</button>
+                    <button class="btn-primary" onclick="changeTariffFromProfile('smart')">Умный (199 ₽/мес)</button>
+                </div>
+                <button class="btn-outline-purple" style="margin-top: 20px; width: 100%;" onclick="closeTariffModal()">Отмена</button>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        modal.style.display = 'flex';
+    }
+    
+    function closeTariffModal() {
+        let modal = document.getElementById('tariffModal');
+        if(modal) modal.remove();
+    }
+
+    function updateTariffSelection() {
+        if (!currentUser) return;
+        const tariffCards = document.querySelectorAll('.tariff-card');
+        tariffCards.forEach(card => {
+            const tariffValue = card.getAttribute('data-tariff');
+            if (tariffValue === currentUser.tariff) {
+                card.classList.add('selected');
+            } else {
+                card.classList.remove('selected');
+            }
+        });
+    }
+
+    // ========== Функции аутентификации ==========
+    function validateEmail(email) {
+        return email.includes('@') && email.includes('.');
+    }
+
+    function openAuthModal(mode) {
+        let modal = document.createElement('div');
+        modal.id = 'authModal';
+        modal.className = 'custom-modal';
+        modal.innerHTML = `
+            <div class="modal-window auth-modal-content">
+                <div style="text-align: center; margin-bottom: 16px;">
+                    <img src="https://static.tildacdn.com/tild6433-3562-4865-a665-613632306561/medium_565ce8678920c.png" style="height: 48px;">
+                    <h3 style="margin-top: 8px;">Ростелеком Дом</h3>
+                </div>
+                <div id="authModalLoginForm">
+                    <input type="text" id="authLoginName" class="auth-input" placeholder="Имя" value="">
+                    <input type="email" id="authLoginEmail" class="auth-input" placeholder="Email" value="">
+                    <input type="password" id="authLoginPassword" class="auth-input" placeholder="Пароль" value="">
+                    <button class="btn-primary" style="width: 100%;" onclick="submitLogin()">Войти</button>
+                    <div class="auth-switch">Нет аккаунта? <a onclick="switchAuthModal('register')">Зарегистрироваться</a></div>
+                </div>
+                <div id="authModalRegisterForm" class="hidden">
+                    <input type="text" id="authRegName" class="auth-input" placeholder="Имя">
+                    <input type="email" id="authRegEmail" class="auth-input" placeholder="Email">
+                    <input type="password" id="authRegPassword" class="auth-input" placeholder="Пароль">
+                    <button class="btn-primary" style="width: 100%;" onclick="submitRegister()">Создать аккаунт</button>
+                    <div class="auth-switch">Уже есть аккаунт? <a onclick="switchAuthModal('login')">Войти</a></div>
+                </div>
+                <button class="btn-outline-purple" style="width: 100%; margin-top: 12px;" onclick="closeAuthModal()">Закрыть</button>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        modal.style.display = 'flex';
+        
+        if(mode === 'register') {
+            document.getElementById('authModalLoginForm').classList.add('hidden');
+            document.getElementById('authModalRegisterForm').classList.remove('hidden');
+        } else {
+            document.getElementById('authModalLoginForm').classList.remove('hidden');
+            document.getElementById('authModalRegisterForm').classList.add('hidden');
+        }
+    }
+
+    function switchAuthModal(mode) {
+        if(mode === 'register') {
+            document.getElementById('authModalLoginForm').classList.add('hidden');
+            document.getElementById('authModalRegisterForm').classList.remove('hidden');
+        } else {
+            document.getElementById('authModalLoginForm').classList.remove('hidden');
+            document.getElementById('authModalRegisterForm').classList.add('hidden');
+        }
+    }
+
+    function closeAuthModal() {
+        let modal = document.getElementById('authModal');
+        if(modal) modal.remove();
+    }
+
+    function submitLogin() {
+        let name = document.getElementById('authLoginName').value.trim();
+        let email = document.getElementById('authLoginEmail').value.trim();
+        let pass = document.getElementById('authLoginPassword').value;
+        let user = users.find(u => u.name === name && u.email === email && u.password === pass);
+        
+        if(user) {
+            currentUser = JSON.parse(JSON.stringify(user));
+            if (!currentUser.devices) currentUser.devices = [];
+            if (!currentUser.customScenarios) currentUser.customScenarios = [];
+            saveAllData();
+            closeAuthModal();
+            showDashboard();
+        } else {
+            showModal({ title: "Ошибка", message: "Неверное имя, email или пароль.", confirmText: "OK", showCancel: false });
+        }
+    }
+
+    function submitRegister() {
+        let name = document.getElementById('authRegName').value.trim();
+        let email = document.getElementById('authRegEmail').value.trim();
+        let pass = document.getElementById('authRegPassword').value;
+        
+        if(!name || !email || !pass) {
+            showModal({ title: "Ошибка", message: "Заполните все поля", confirmText: "OK", showCancel: false });
+            return;
+        }
+        
+        if (!validateEmail(email)) {
+            showModal({ title: "Ошибка", message: "Введите корректный email (должен содержать @ и точку)", confirmText: "OK", showCancel: false });
+            return;
+        }
+        
+        if(users.find(u => u.email === email)) {
+            showModal({ title: "Ошибка", message: "Пользователь с таким email уже существует", confirmText: "OK", showCancel: false });
+            return;
+        }
+        
+        let newUser = {
+            id: users.length + 1,
+            name: name,
+            email: email,
+            password: pass,
+            tariff: 'free',
+            devices: [],
+            customScenarios: []
+        };
+        
+        users.push(newUser);
+        currentUser = JSON.parse(JSON.stringify(newUser));
+        saveAllData();
+        closeAuthModal();
+        showDashboard();
+    }
+
+    // ========== Функции сценариев ==========
+    function openAddScenarioPanel() {
+        if (!currentUser) {
+            openAuthModal('login');
+            return;
+        }
+        
+        if (!currentUser.devices || currentUser.devices.length === 0) {
+            showModal({ 
+                title: "Нет устройств", 
+                message: "Сначала добавьте устройства в разделе 'Устройства'", 
+                confirmText: "OK", 
+                showCancel: false 
+            });
+            return;
+        }
+        
+        const tariff = tariffLimits[currentUser.tariff];
+        const currentScenariosCount = (currentUser.customScenarios || []).length;
+        
+        if (currentScenariosCount >= tariff.maxSimpleScenarios) {
+            showModal({ 
+                title: "Лимит сценариев", 
+                message: `У вас достигнут лимит в ${tariff.maxSimpleScenarios} сценариев. Обновите тариф для создания новых.`, 
+                confirmText: "OK", 
+                showCancel: false 
+            });
+            return;
+        }
+        
+        selectedDevicesForScenario = [];
+        let panel = document.getElementById('addScenarioPanel');
+        let overlay = document.getElementById('overlay');
+        
+        let container = document.getElementById('scenarioDevicesList');
+        container.innerHTML = '';
+        
+        currentUser.devices.forEach(device => {
+            let option = document.createElement('div');
+            option.className = 'device-option';
+            option.setAttribute('data-device-id', device.id);
+            option.innerHTML = `
+                <div style="font-size: 1.5rem;">${device.icon}</div>
+                <div style="font-weight: 500;">${device.name}</div>
+            `;
+            option.onclick = () => toggleDeviceForScenario(device, option);
+            container.appendChild(option);
+        });
+        
+        panel.classList.add('open');
+        overlay.classList.add('show');
+    }
+    
+    function toggleDeviceForScenario(device, element) {
+        const index = selectedDevicesForScenario.findIndex(d => d.id === device.id);
+        if (index === -1) {
+            selectedDevicesForScenario.push(device);
+            element.classList.add('selected');
+        } else {
+            selectedDevicesForScenario.splice(index, 1);
+            element.classList.remove('selected');
+        }
+    }
+    
+    function createScenario() {
+        const name = document.getElementById('scenarioName').value.trim();
+        const time = document.getElementById('scenarioTime').value;
+        
+        if (!name) {
+            showModal({ title: "Ошибка", message: "Введите название сценария", confirmText: "OK", showCancel: false });
+            return;
+        }
+        
+        if (!time) {
+            showModal({ title: "Ошибка", message: "Выберите время", confirmText: "OK", showCancel: false });
+            return;
+        }
+        
+        if (selectedDevicesForScenario.length === 0) {
+            showModal({ title: "Ошибка", message: "Выберите хотя бы одно устройство", confirmText: "OK", showCancel: false });
+            return;
+        }
+        
+        const newScenario = {
+            id: Date.now().toString(),
+            name: name,
+            time: time,
+            devices: selectedDevicesForScenario.map(d => ({ id: d.id, name: d.name, icon: d.icon }))
+        };
+        
+        if (!currentUser.customScenarios) currentUser.customScenarios = [];
+        currentUser.customScenarios.push(newScenario);
+        saveAllData();
+        
+        closeAddScenarioPanel();
+        renderCustomScenarios();
+        showModal({ title: "Сценарий создан", message: `Сценарий "${name}" будет выполняться в ${time}`, confirmText: "Отлично", showCancel: false });
+        
+        document.getElementById('scenarioName').value = '';
+        document.getElementById('scenarioTime').value = '';
+        selectedDevicesForScenario = [];
+    }
+    
+    function deleteScenario(scenarioId) {
+        showModal({
+            title: "Удалить сценарий",
+            message: "Вы уверены, что хотите удалить этот сценарий?",
+            showCancel: true,
+            onConfirm: () => {
+                currentUser.customScenarios = currentUser.customScenarios.filter(s => s.id !== scenarioId);
+                saveAllData();
+                renderCustomScenarios();
+            }
+        });
+    }
+    
+    function renderCustomScenarios() {
+        const container = document.getElementById('customScenariosList');
+        if (!container) return;
+        
+        if (!currentUser.customScenarios || currentUser.customScenarios.length === 0) {
+            container.innerHTML = `
+                <div style="grid-column: 1/-1; text-align: center; padding: 48px; background: var(--gray-bg); border-radius: 28px;">
+                    <div style="font-size: 3rem;">✨</div>
+                    <h3 style="margin: 16px 0;">У вас пока нет сценариев</h3>
+                    <p style="color: var(--text-gray);">Создайте свой первый сценарий</p>
+                </div>
+            `;
+            return;
+        }
+        
+        container.innerHTML = '';
+        currentUser.customScenarios.forEach(scenario => {
+            const card = document.createElement('div');
+            card.className = 'scenario-card';
+            card.innerHTML = `
+                <div class="scenario-header">
+                    <div class="scenario-name">${scenario.name}</div>
+                    <div class="scenario-time">⏰ ${scenario.time}</div>
+                </div>
+                <div class="scenario-devices">
+                    ${scenario.devices.map(d => `<span class="scenario-device-tag">${d.icon} ${d.name}</span>`).join('')}
+                </div>
+                <div class="scenario-actions">
+                    <button class="btn-primary btn-sm" onclick="runScenario('${scenario.id}')">▶ Выполнить сейчас</button>
+                    <button class="btn-outline-purple btn-sm" onclick="deleteScenario('${scenario.id}')">🗑 Удалить</button>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+    }
+    
+    function runScenario(scenarioId) {
+        const scenario = currentUser.customScenarios.find(s => s.id === scenarioId);
+        if (scenario) {
+            scenario.devices.forEach(device => {
+                const realDevice = currentUser.devices.find(d => d.id === device.id);
+                if (realDevice) {
+                    realDevice.status = true;
+                }
+            });
+            renderDevices();
+            saveAllData();
+            showModal({ title: "Сценарий выполнен", message: `Сценарий "${scenario.name}" выполнен!`, confirmText: "Отлично", showCancel: false });
+        }
+    }
+    
+    function deleteAllScenarios() {
+        if (!currentUser.customScenarios || currentUser.customScenarios.length === 0) {
+            showModal({ title: "Информация", message: "У вас нет сценариев", confirmText: "OK", showCancel: false });
+            return;
+        }
+        showModal({
+            title: "Удалить все сценарии",
+            message: `Вы уверены, что хотите удалить все ${currentUser.customScenarios.length} сценариев?`,
+            showCancel: true,
+            onConfirm: () => {
+                currentUser.customScenarios = [];
+                saveAllData();
+                renderCustomScenarios();
+                showModal({ title: "Готово", message: "Все сценарии удалены", confirmText: "OK", showCancel: false });
+            }
+        });
+    }
+
+    // ========== Функции интерфейса ==========
+    function showDashboard() {
+        document.getElementById('landingPage').classList.add('hidden');
+        document.getElementById('dashboardPage').classList.remove('hidden');
+        
+        if(!currentUser.devices) currentUser.devices = [];
+        if(!currentUser.customScenarios) currentUser.customScenarios = [];
+        
+        updateDashboardUI();
+        showSection('devices');
+    }
+
+    function goToLanding() {
+        document.getElementById('landingPage').classList.remove('hidden');
+        document.getElementById('dashboardPage').classList.add('hidden');
+        updateTariffSelection();
+        updateLandingUI();
+    }
+
+    function goToDevicesPanel() {
+        if (currentUser) {
+            document.getElementById('landingPage').classList.add('hidden');
+            document.getElementById('dashboardPage').classList.remove('hidden');
+            showSection('devices');
+            updateDashboardUI();
+        } else {
+            openAuthModal('login');
+        }
+    }
+
+    function updateDashboardUI() {
+        const tariff = currentUser.tariff || 'free';
+        document.getElementById('userNameDisplay').innerText = currentUser.name;
+        document.getElementById('greetingText').innerHTML = `Привет, ${currentUser.name}! 👋`;
+        document.getElementById('profileName').innerText = currentUser.name;
+        document.getElementById('profileEmail').innerText = currentUser.email;
+        document.getElementById('profileTariff').innerText = tariffLimits[tariff].name;
+        document.getElementById('tariffBadge').innerText = tariffLimits[tariff].name;
+        
+        const limit = tariffLimits[tariff].maxDevices;
+        document.getElementById('deviceCount').innerText = currentUser.devices.length;
+        document.getElementById('deviceLimit').innerText = limit;
+        
+        renderDevices();
+        updateScenarioUI();
+        renderSmartScenarios();
+        renderCustomScenarios();
+        saveAllData();
+    }
+
+    function renderSmartScenarios() {
+        const container = document.getElementById('smartScenariosBlock');
+        if(!container) return;
+        const tariff = tariffLimits[currentUser.tariff];
+        
+        if(tariff.hasAutoClean || tariff.hasAI) {
+            let html = '<h3 style="margin-bottom: 16px;">🤖 Умные сценарии (доступны в тарифе "Умный")</h3><div class="device-grid">';
+            if(tariff.hasAutoClean) {
+                html += `<div class="device-card" style="cursor:default;"><div class="device-icon">🤖</div><div class="device-name">Автоуборка</div><div class="device-status status-on">Активен</div><p style="font-size:0.8rem;">Пылесос включается, когда никого нет 30 мин</p></div>`;
+            }
+            if(tariff.hasAI) {
+                html += `<div class="device-card" style="cursor:default;"><div class="device-icon">🛡️</div><div class="device-name">Умная безопасность</div><div class="device-status status-on">Активен</div><p style="font-size:0.8rem;">Фильтрация ложных срабатываний</p></div>`;
+            }
+            html += `</div>`;
+            container.innerHTML = html;
+        } else {
+            container.innerHTML = `<div style="background: var(--gray-bg); border-radius: 24px; padding: 24px; text-align: center;">
+                🔓 Умные сценарии доступны в тарифе <strong>"Умный"</strong><br>
+                <button class="btn-outline-purple btn-sm" style="margin-top: 12px;" onclick="goToLanding()">Перейти к тарифам</button>
+            </div>`;
+        }
+    }
+
+    function renderDevices() {
+        let grid = document.getElementById('devicesGrid');
+        if(!grid) return;
+        grid.innerHTML = '';
+        
+        if(!currentUser.devices || currentUser.devices.length === 0) {
+            grid.innerHTML = `
+                <div style="grid-column: 1/-1; text-align: center; padding: 48px; background: var(--gray-bg); border-radius: 28px;">
+                    <div style="font-size: 3rem;">🏠</div>
+                    <h3 style="margin: 16px 0;">У вас пока нет устройств</h3>
+                    <p style="color: var(--text-gray);">Нажмите кнопку "Добавить устройство"</p>
+                </div>
+            `;
+            return;
+        }
+        
+        currentUser.devices.forEach((device, index) => {
+            let card = document.createElement('div');
+            card.className = 'device-card';
+            card.onclick = () => toggleDevice(device);
+            card.innerHTML = `
+                <div class="device-icon">${device.icon}</div>
+                <div class="device-name">${device.name}</div>
+                <div class="device-status ${device.status ? 'status-on' : 'status-off'}">
+                    ${device.status ? '✅ Включено' : '⭕ Выключено'}
+                </div>
+                <button class="btn-outline" style="margin-top: 12px; padding: 6px 16px; font-size: 0.8rem;" onclick="event.stopPropagation(); removeDevice('${device.id}')">Удалить</button>
+            `;
+            grid.appendChild(card);
+        });
+    }
+
+    function openAddDevicePanel() {
+        if (!currentUser) {
+            openAuthModal('login');
+            return;
+        }
+        
+        const tariff = tariffLimits[currentUser.tariff];
+        if(currentUser.devices.length >= tariff.maxDevices) {
+            showModal({ title: "Лимит устройств", message: `У вас достигнут лимит в ${tariff.maxDevices} устройств. Обновите тариф для добавления новых.`, confirmText: "OK", showCancel: false });
+            return;
+        }
+        
+        let panel = document.getElementById('addDevicePanel');
+        let overlay = document.getElementById('overlay');
+        
+        let container = document.getElementById('devicesListPanel');
+        container.innerHTML = '';
+        
+        availableDevices.forEach(device => {
+            let alreadyExists = currentUser.devices.some(d => d.name === device.name);
+            let option = document.createElement('div');
+            option.className = 'device-option' + (alreadyExists ? ' disabled' : '');
+            option.innerHTML = `
+                <div style="font-size: 1.5rem;">${device.icon}</div>
+                <div style="font-weight: 500;">${device.name}</div>
+            `;
+            if(!alreadyExists) {
+                option.onclick = () => addDeviceFromPanel(device);
+            }
+            container.appendChild(option);
+        });
+        
+        panel.classList.add('open');
+        overlay.classList.add('show');
+    }
+
+    function closeAddDevicePanel() {
+        document.getElementById('addDevicePanel').classList.remove('open');
+        document.getElementById('overlay').classList.remove('show');
+    }
+    
+    function closeAddScenarioPanel() {
+        document.getElementById('addScenarioPanel').classList.remove('open');
+        document.getElementById('overlay').classList.remove('show');
+        selectedDevicesForScenario = [];
+    }
+    
+    function closeAllPanels() {
+        closeAddDevicePanel();
+        closeAddScenarioPanel();
+    }
+
+    function addDeviceFromPanel(device) {
+        const tariff = tariffLimits[currentUser.tariff];
+        if(currentUser.devices.length >= tariff.maxDevices) {
+            showModal({ title: "Лимит устройств", message: `У вас достигнут лимит в ${tariff.maxDevices} устройств.`, confirmText: "OK", showCancel: false });
+            closeAddDevicePanel();
+            return;
+        }
+        
+        let alreadyExists = currentUser.devices.some(d => d.name === device.name);
+        if(alreadyExists) {
+            showModal({ title: "Внимание", message: `Устройство "${device.name}" уже добавлено`, confirmText: "OK", showCancel: false });
+            return;
+        }
+        
+        let newDevice = {
+            id: Date.now().toString(),
+            name: device.name,
+            icon: device.icon,
+            status: false,
+            critical: device.critical
+        };
+        
+        currentUser.devices.push(newDevice);
+        renderDevices();
+        closeAddDevicePanel();
+        updateDashboardUI();
+        showModal({ title: "Устройство добавлено", message: `${device.name} теперь в вашем умном доме!`, confirmText: "Отлично", showCancel: false });
+    }
+
+    function toggleDevice(device) {
+        showModal({
+            title: `Подтверждение`,
+            message: `Вы уверены, что хотите ${device.status ? 'выключить' : 'включить'} "${device.name}"?`,
+            showCancel: true,
+            onConfirm: () => {
+                device.status = !device.status;
+                renderDevices();
+                document.getElementById('checkResult').classList.add('hidden');
+                saveAllData();
+            }
+        });
+    }
+
+    function removeDevice(deviceId) {
+        let device = currentUser.devices.find(d => d.id === deviceId);
+        if(!device) return;
+        showModal({
+            title: "Удалить устройство",
+            message: `Удалить "${device.name}" из вашего умного дома?`,
+            showCancel: true,
+            onConfirm: () => {
+                currentUser.devices = currentUser.devices.filter(d => d.id !== deviceId);
+                renderDevices();
+                updateDashboardUI();
+                showModal({ title: "Готово", message: "Устройство удалено", confirmText: "OK", showCancel: false });
+            }
+        });
+    }
+
+    function deleteAllDevices() {
+        if(!currentUser.devices || currentUser.devices.length === 0) {
+            showModal({ title: "Информация", message: "У вас и так нет устройств", confirmText: "OK", showCancel: false });
+            return;
+        }
+        showModal({
+            title: "Удалить все устройства",
+            message: `Вы уверены, что хотите удалить все ${currentUser.devices.length} устройств?`,
+            showCancel: true,
+            onConfirm: () => {
+                currentUser.devices = [];
+                renderDevices();
+                updateDashboardUI();
+                showModal({ title: "Готово", message: "Все устройства удалены", confirmText: "OK", showCancel: false });
+            }
+        });
+    }
+
+    function checkBeforeExit() {
+        let turnedOn = currentUser.devices.filter(d => d.status === true);
+        let resultDiv = document.getElementById('checkResult');
+        
+        if(turnedOn.length === 0) {
+            resultDiv.innerHTML = `<div class="all-good">🎉 Всё отлично! Все устройства выключены. Можно выходить.</div>`;
+        } else {
+            let listHtml = '<ul class="forgotten-list">';
+            turnedOn.forEach(device => {
+                listHtml += `
+                    <li class="forgotten-item">
+                        <div>
+                            <span style="font-size: 1.5rem;">${device.icon}</span>
+                            <span style="margin-left: 8px;">${device.name}</span>
+                        </div>
+                        <button class="fix-btn" onclick="fixDevice('${device.id}')">Выключить</button>
+                    </li>
+                `;
+            });
+            listHtml += '</ul>';
+            resultDiv.innerHTML = `
+                <div class="result-header result-warning">⚠️ Включенные устройства:</div>
+                ${listHtml}
+                <div style="margin-top: 16px; font-size: 0.9rem; color: #64748B;">Нажмите "Выключить" чтобы исправить</div>
+            `;
+        }
+        resultDiv.classList.remove('hidden');
+    }
+
+    function fixDevice(deviceId) {
+        let device = currentUser.devices.find(d => d.id === deviceId);
+        if(device) {
+            device.status = false;
+            renderDevices();
+            checkBeforeExit();
+            saveAllData();
+        }
+    }
+
+    function toggleScenario(scene) {
+        if (!currentUser) return;
+        
+        let newState = !scenarios[scene];
+        let action = newState ? "включить" : "выключить";
+        showModal({
+            title: "Автосценарий",
+            message: `Вы уверены, что хотите ${action} сценарий "${scene === 'quiet' ? 'Вечерняя тишина' : 'Проверка перед выходом'}"?`,
+            showCancel: true,
+            onConfirm: () => {
+                scenarios[scene] = newState;
+                updateScenarioUI();
+                saveAllData();
+            }
+        });
+    }
+
+    function updateScenarioUI() {
+        let quietEl = document.getElementById('scenarioQuietStatus');
+        let checkEl = document.getElementById('scenarioCheckStatus');
+        if(quietEl) {
+            quietEl.innerText = scenarios.quiet ? "Включен" : "Выключен";
+            quietEl.className = `device-status ${scenarios.quiet ? 'status-on' : 'status-off'}`;
+        }
+        if(checkEl) {
+            checkEl.innerText = scenarios.check ? "Включен" : "Выключен";
+            checkEl.className = `device-status ${scenarios.check ? 'status-on' : 'status-off'}`;
+        }
+    }
+
+    function showSection(section) {
+        document.getElementById('devicesSection').classList.add('hidden');
+        document.getElementById('scenarioSection').classList.add('hidden');
+        document.getElementById('profileSection').classList.add('hidden');
+        if(section === 'devices') {
+            document.getElementById('devicesSection').classList.remove('hidden');
+            renderDevices();
+        }
+        if(section === 'scenario') {
+            document.getElementById('scenarioSection').classList.remove('hidden');
+            renderCustomScenarios();
+        }
+        if(section === 'profile') document.getElementById('profileSection').classList.remove('hidden');
+    }
+
+    function logout() {
+        showModal({
+            title: "Выход",
+            message: "Вы уверены, что хотите выйти?",
+            showCancel: true,
+            onConfirm: () => {
+                currentUser = null;
+                localStorage.removeItem('currentUser');
+                document.getElementById('dashboardPage').classList.add('hidden');
+                document.getElementById('landingPage').classList.remove('hidden');
+                updateLandingUI();
+            }
+        });
+    }
+
+    function showModal(options) {
+        let existingModal = document.getElementById('customModal');
+        if(existingModal) existingModal.remove();
+
+        let modal = document.createElement('div');
+        modal.id = 'customModal';
+        modal.className = 'custom-modal';
+        modal.innerHTML = `
+            <div class="modal-window">
+                <div class="modal-title" style="font-size: 1.5rem; font-weight: 600; margin-bottom: 16px;">${options.title || 'Подтверждение'}</div>
+                <div style="margin-bottom: 24px;">${options.message || ''}</div>
+                <div style="display: flex; gap: 12px; justify-content: center;">
+                    ${options.showCancel ? `<button class="btn-outline" id="modalCancel">${options.cancelText || 'Отмена'}</button>` : ''}
+                    <button class="btn-primary" id="modalConfirm">${options.confirmText || 'Да'}</button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        modal.style.display = 'flex';
+
+        document.getElementById('modalConfirm').onclick = () => {
+            modal.remove();
+            if(options.onConfirm) options.onConfirm();
+        };
+        if(options.showCancel) {
+            document.getElementById('modalCancel').onclick = () => modal.remove();
+        }
+    }
+</script>
 </body>
 </html>
