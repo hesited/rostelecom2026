@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+	<title>PUFFY - Наше местечко | Личное пространство для дневника, желаний и планов</title>
+	<link rel="stylesheet" href="style.css">
+	<link href="https://fonts.googleapis.com/css2?family=Rubik+Mono+One&display=swap" rel="stylesheet">
+	
+	<!-- PWA Meta Tags -->
+	<meta name="theme-color" content="#b8a3ff">
+	<meta name="description" content="PUFFY - уютное личное пространство для ведения дневника, создания вишлистов, сохранения рецептов и планирования дел. Ваше цифровое местечко для важных мыслей и идей.">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="default">
+	<meta name="apple-mobile-web-app-title" content="PUFFY">
+	<meta name="application-name" content="PUFFY">
+	<meta name="keywords" content="дневник, вишлист, рецепты, планы, личное пространство, PUFFY, заметки, желания, задачи">
+	<meta name="author" content="PUFFY App">
+	<meta name="robots" content="index, follow">
+	<meta name="msapplication-TileColor" content="#b8a3ff">
+	<meta name="msapplication-config" content="browserconfig.xml">
+	
+	<!-- PWA Manifest -->
+	<link rel="manifest" href="manifest.json">
+	
+	<!-- Apple Touch Icon -->
+	<link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDE5MiAxOTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiByeD0iMjQiIGZpbGw9InVybCgjZ3JhZDApIi8+CjxkZWZzPgo8bGluZWFyR3JhZGllbnQgaWQ9ImdyYWQwIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4KPHN0b3Agb2Zmc2V0PSIwJSIgc3R5bGU9InN0b3AtY29sb3I6I2ZmOWVjNTtzdG9wLW9wYWNpdHk6MSIgLz4KPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdHlsZT0ic3RvcC1jb2xvcjojYjhhM2ZmO3N0b3Atb3BhY2l0eToxIiAvPgo8L2xpbmVhckdyYWRpZW50Pgo8L2RlZnM+Cjx0ZXh0IHg9Ijk2IiB5PSIxMDAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSI0OCIgZm9udC13ZWlnaHQ9ImJvbGQiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIj5QVUZGWTwvdGV4dD4KPC9zdmc+">
+</head>
+<body>
+	<!-- Фоновые элементы -->
+	<div class="background" role="presentation" aria-hidden="true">
+		<div class="blob blob1" role="presentation" aria-hidden="true"></div>
+		<div class="blob blob2" role="presentation" aria-hidden="true"></div>
+		<div class="blob blob3" role="presentation" aria-hidden="true"></div>
+	</div>
+	<main class="container">
+		<nav class="top-menu" role="navigation" aria-label="Главное меню">
+			<a href="pages/diary.html" aria-label="Дневник - личные записи">Дневник</a>
+			<a href="pages/wishlist.html" aria-label="Вишлист - список желаний">Вишлист</a>
+			<a href="pages/recipes.html" aria-label="Рецепты - кулинарная книга">Рецепты</a>
+			<a href="pages/todolist.html" aria-label="Список дел - задачи и планы">Список дел</a>
+			<a href="pages/mediateka.html" aria-label="Медиатека - коллекция медиафайлов">Медиатека</a>
+			<a href="profile.html" id="profile-link" style="display: none;" aria-label="Личный профиль">👤 Профиль</a>
+			<a href="#" onclick="logout()" class="logout-btn" aria-label="Выйти из аккаунта">Выход</a>
+		</nav>
+		<header class="hero">
+			<h1 class="logo" aria-label="PUFFY - Наше местечко"><span class="logo-letter">P</span><span class="logo-letter">U</span><span class="logo-letter">F</span><span class="logo-letter">F</span><span class="logo-letter">Y</span></h1>
+			<p class="tagline">Наше местечко</p>
+			<p class="date" id="current-date" aria-label="Текущая дата">Загрузка даты...</p>
+		</header>
+		<section class="daily" aria-label="На сегодня">
+			<div class="place-row">
+				<div class="add-entry-wrap">
+					<button type="button" class="add-entry-btn-large" id="add-entry-btn" aria-expanded="false" aria-haspopup="true" aria-label="Добавить новую запись">
+						<span class="add-entry-btn-text-large">+ Добавить запись</span>
+					</button>
+					<div class="add-entry-dropdown" id="add-entry-dropdown" role="menu" aria-label="Меню добавления записи" hidden>
+						<a href="pages/diary.html?add=1" class="dropdown-item" role="menuitem" aria-label="Добавить запись в дневник">📔 Дневник</a>
+						<a href="pages/wishlist.html?add=1" class="dropdown-item" role="menuitem" aria-label="Добавить желание в вишлист">⭐ Вишлист</a>
+						<a href="pages/recipes.html?add=1" class="dropdown-item" role="menuitem" aria-label="Добавить рецепт">🍳 Рецепты</a>
+						<a href="pages/todolist.html?add=1" class="dropdown-item" role="menuitem" aria-label="Добавить задачу">✅ Список дел</a>
+						<a href="pages/mediateka.html?add=1" class="dropdown-item" role="menuitem" aria-label="Добавить медиафайл">🎬 Медиатека</a>
+					</div>
+				</div>
+			</div>
+			<div class="daily-row">
+				<div class="weather-card card" aria-label="Погода">
+					<h2 class="card-title">Погода</h2>
+					<div id="weather-content" class="weather-content" role="status" aria-live="polite">
+						<p class="weather-loading">Определяем местоположение…</p>
+					</div>
+				</div>
+				<div class="song-card card" role="region" aria-label="Музыка">
+					<h2 class="card-title">Песня дня</h2>
+					<iframe title="Плеер Apple Music - Песня дня" allow="autoplay *; encrypted-media *;"
+						frameborder="0" height="175"
+						style="width:100%;max-width:500px;overflow:hidden;border-radius:10px;"
+						sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation-by-user-activation"
+						src="https://embed.music.apple.com/album/birds-of-a-feather/1739659134?i=1739659142"
+						loading="lazy">
+					</iframe>
+				</div>
+			</div>
+			<div class="place-row">
+				<div class="place-card card" role="region" aria-label="Рекомендуемые места">
+					<h2 class="card-title">Рекомендуемое место в Якутске</h2>
+					<div id="place-content" class="place-content" role="status" aria-live="polite">
+						<p class="place-loading">Загружаем интересное место...</p>
+					</div>
+				</div>
+			</div>
+		</section>
+	</main>
+	<nav class="bottom-nav" role="navigation" aria-label="Навигация по разделам">
+		<a href="pages/diary.html" title="Дневник - личные записи" class="nav-item">
+			<span class="nav-icon" aria-hidden="true">📔</span>
+			<span class="nav-label">Дневник</span>
+		</a>
+		<a href="pages/wishlist.html" title="Вишлист - список желаний" class="nav-item">
+			<span class="nav-icon" aria-hidden="true">⭐</span>
+			<span class="nav-label">Вишлист</span>
+		</a>
+		<a href="pages/recipes.html" title="Рецепты - кулинарная книга" class="nav-item">
+			<span class="nav-icon" aria-hidden="true">🍳</span>
+			<span class="nav-label">Рецепты</span>
+		</a>
+		<a href="pages/todolist.html" title="Список дел - задачи и планы" class="nav-item">
+			<span class="nav-icon" aria-hidden="true">✅</span>
+			<span class="nav-label">Дела</span>
+		</a>
+		<a href="pages/mediateka.html" title="Медиатека - коллекция медиафайлов" class="nav-item">
+			<span class="nav-icon" aria-hidden="true">🎬</span>
+			<span class="nav-label">Медиатека</span>
+		</a>
+	</nav>
+	<script src="auth-system.js"></script>
+	<script>
+		// Инициализация системы авторизации
+		const authSystem = new AuthSystem();
+		
+		// Проверяем авторизацию
+		if (!authSystem.isAuthenticated()) {
+			window.location.href = "login-new.html";
+		}
+		
+		// Показываем ссылку на профиль если авторизован
+		if (authSystem.isAuthenticated()) {
+			document.getElementById('profile-link').style.display = 'inline-block';
+		}
+	</script>
+	<script src="yakutsk-places-real.js"></script>
+	<script src="weather.js"></script>
+	<script src="glass.js"></script>
+	<script>
+		// Текущая дата
+		const options = { day: 'numeric', month: 'long' };
+		document.getElementById('current-date').textContent = new Date().toLocaleDateString('ru-RU', options);
+		
+		// Активация текущего раздела в мобильном меню
+		function setActiveNavItem() {
+			const currentPath = window.location.pathname;
+			const navItems = document.querySelectorAll('.nav-item');
+			
+			navItems.forEach(item => {
+				item.classList.remove('active');
+				const href = item.getAttribute('href');
+				
+				// Проверяем совпадение пути
+				if (currentPath.includes(href) || 
+					(currentPath === '/' && href === 'index.html') ||
+					(currentPath.endsWith('index.html') && href === 'index.html')) {
+					item.classList.add('active');
+				}
+			});
+		}
+		
+		// Выпадающее меню «Добавить запись»
+		(function () {
+			var btn = document.getElementById('add-entry-btn');
+			var dropdown = document.getElementById('add-entry-dropdown');
+			if (!btn || !dropdown) return;
+			function open() {
+				dropdown.hidden = false;
+				btn.setAttribute('aria-expanded', 'true');
+				document.addEventListener('click', closeOnOutside);
+			}
+			function close() {
+				dropdown.hidden = true;
+				btn.setAttribute('aria-expanded', 'false');
+				document.removeEventListener('click', closeOnOutside);
+			}
+			function closeOnOutside(e) {
+				if (!dropdown.contains(e.target) && e.target !== btn) close();
+			}
+			btn.addEventListener('click', function (e) {
+				e.stopPropagation();
+				if (dropdown.hidden) open(); else close();
+			});
+		})();
+		
+		// Регистрация Service Worker для PWA
+		if ('serviceWorker' in navigator) {
+			window.addEventListener('load', function() {
+				navigator.serviceWorker.register('/sw.js')
+					.then(function(registration) {
+						console.log('Service Worker зарегистрирован успешно:', registration.scope);
+					})
+					.catch(function(error) {
+						console.log('Ошибка регистрации Service Worker:', error);
+					});
+			});
+		}
+		
+		// Инициализация активного пункта меню
+		setActiveNavItem();
+	</script>
+</body>
+</html>
