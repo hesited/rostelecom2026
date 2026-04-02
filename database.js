@@ -28,7 +28,6 @@ async function testSupabase() {
 // 🪟 AUTH MODAL (ГОТОВЫЙ)
 // ===============================
 function openAuthModal(mode) {
-    // удаляем старое окно если есть
     const old = document.getElementById('authModal');
     if (old) old.remove();
 
@@ -46,23 +45,24 @@ function openAuthModal(mode) {
         z-index: 9999;
     `;
 
+    let nameInput = '';
+    if (mode === 'register') {
+        nameInput = '<input id="authRegName" placeholder="Имя" style="width:100%; margin-bottom:10px;">';
+    }
+
     modal.innerHTML = `
-        <div style="background: white; padding: 20px; border-radius: 12px; width: 300px;">
-            <h3 style="margin-bottom: 10px;">
-                ${mode === 'login' ? 'Вход' : 'Регистрация'}
-            </h3>
+        <div style="background:white; padding:20px; border-radius:12px; width:300px;">
+            <h3>${mode === 'login' ? 'Вход' : 'Регистрация'}</h3>
 
-            ${mode === 'register' 
-                ? <input id="authRegName" placeholder="Имя" style="width:100%; margin-bottom:10px;"> 
-                : ''}
+            ${nameInput}
 
-            <input id="${mode === 'login' ? 'authLoginEmail' : 'authRegEmail'}" 
-                   placeholder="Email" 
+            <input id="${mode === 'login' ? 'authLoginEmail' : 'authRegEmail'}"
+                   placeholder="Email"
                    style="width:100%; margin-bottom:10px;">
 
-            <input id="${mode === 'login' ? 'authLoginPassword' : 'authRegPassword'}" 
-                   type="password" 
-                   placeholder="Пароль" 
+            <input id="${mode === 'login' ? 'authLoginPassword' : 'authRegPassword'}"
+                   type="password"
+                   placeholder="Пароль"
                    style="width:100%; margin-bottom:10px;">
 
             <button id="authSubmitBtn" style="width:100%; margin-bottom:10px;">
@@ -75,10 +75,8 @@ function openAuthModal(mode) {
 
     document.body.appendChild(modal);
 
-    // закрытие
     document.getElementById('closeModal').onclick = () => modal.remove();
 
-    // логика кнопки
     document.getElementById('authSubmitBtn').onclick = () => {
         if (mode === 'login') {
             submitLogin();
