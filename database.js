@@ -94,18 +94,16 @@ window.openAuthModal = openAuthModal;
 // 📝 REGISTER
 // ===============================
 async function submitRegister() {
-    console.log('=== REGISTER ===');
-
     let name = document.getElementById('authRegName')?.value.trim();
     let email = document.getElementById('authRegEmail')?.value.trim();
     let password = document.getElementById('authRegPassword')?.value;
 
-    if (!name || !email || !password) {
+    if (!name  !email  !password) {
         alert('Заполни все поля');
         return;
     }
 
-    // 1. Регистрация в auth
+    // 1. регистрация
     const { data: authData, error: authError } = await supabaseClient.auth.signUp({
         email,
         password,
@@ -115,39 +113,45 @@ async function submitRegister() {
     });
 
     if (authError) {
-        console.error(authError);
         alert('Ошибка регистрации: ' + authError.message);
         return;
     }
 
     const user = authData.user;
 
-    if (!user) {
-        alert('Пользователь не создан');
-        return;
-    }
-
-    console.log('Auth OK:', user.id);
-
-    // 2. Запись в таблицу users
+    // 2. запись в таблицу
     const { error: dbError } = await supabaseClient
         .from('users')
         .insert([{
             id: user.id,
             email: email,
             name: name,
-            tariff: 'free',
-            created_at: new Date().toISOString()
+            tariff: 'free'
         }]);
 
     if (dbError) {
-        console.error(dbError);
-        alert('Ошибка записи в таблицу: ' + dbError.message);
+        alert('Ошибка записи: ' + dbError.message);
         return;
     }
 
-    console.log('✅ User saved in table');
-    alert('Регистрация успешна');
+    // 🔥 3. АВТОЛОГИН
+    const { data: loginData, error: loginError } = await supabaseClient.auth.signInWithPassword({
+        email,
+        password
+    });
+
+    if (loginError) {
+        alert('Регистрация успешна, но вход не выполнен');
+        return;
+    }
+
+    console.log('✅ Автологин:', loginData.user);
+
+    alert('Регистрация и вход выполнены!');
+
+    // 👉 можно закрыть модалку
+    const modal = document.getElementById('authModal');
+    if (modal) modal.remove();
 }
 
 // ===============================
