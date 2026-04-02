@@ -25,6 +25,74 @@ async function testSupabase() {
 }
 
 // ===============================
+// 🪟 AUTH MODAL (ГОТОВЫЙ)
+// ===============================
+function openAuthModal(mode) {
+    // удаляем старое окно если есть
+    const old = document.getElementById('authModal');
+    if (old) old.remove();
+
+    let modal = document.createElement('div');
+    modal.id = 'authModal';
+
+    modal.style = `
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: rgba(0,0,0,0.6);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+    `;
+
+    modal.innerHTML = `
+        <div style="background: white; padding: 20px; border-radius: 12px; width: 300px;">
+            <h3 style="margin-bottom: 10px;">
+                ${mode === 'login' ? 'Вход' : 'Регистрация'}
+            </h3>
+
+            ${mode === 'register' 
+                ? <input id="authRegName" placeholder="Имя" style="width:100%; margin-bottom:10px;"> 
+                : ''}
+
+            <input id="${mode === 'login' ? 'authLoginEmail' : 'authRegEmail'}" 
+                   placeholder="Email" 
+                   style="width:100%; margin-bottom:10px;">
+
+            <input id="${mode === 'login' ? 'authLoginPassword' : 'authRegPassword'}" 
+                   type="password" 
+                   placeholder="Пароль" 
+                   style="width:100%; margin-bottom:10px;">
+
+            <button id="authSubmitBtn" style="width:100%; margin-bottom:10px;">
+                ${mode === 'login' ? 'Войти' : 'Зарегистрироваться'}
+            </button>
+
+            <button id="closeModal" style="width:100%;">Закрыть</button>
+        </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    // закрытие
+    document.getElementById('closeModal').onclick = () => modal.remove();
+
+    // логика кнопки
+    document.getElementById('authSubmitBtn').onclick = () => {
+        if (mode === 'login') {
+            submitLogin();
+        } else {
+            submitRegister();
+        }
+    };
+}
+
+// делаем глобальной
+window.openAuthModal = openAuthModal;
+
+
+// ===============================
 // 📝 REGISTER
 // ===============================
 async function submitRegister() {
