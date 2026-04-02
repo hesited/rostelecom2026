@@ -98,7 +98,7 @@ async function submitRegister() {
     let email = document.getElementById('authRegEmail')?.value.trim();
     let password = document.getElementById('authRegPassword')?.value;
 
-    if (!name  !email  !password) {
+    if (!name || !email || !password) {
         alert('Заполни все поля');
         return;
     }
